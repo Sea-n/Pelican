@@ -23,7 +23,7 @@ extension TelegramRequest {
 	## API Description
 	Sends a message.  Must contain a chat ID, message text and an optional MarkupType.
 	*/
-	public static func sendMessage(chatID: Int, text: String, replyMarkup: MarkupType?, parseMode: MessageParseMode = .markdown, disableWebPreview: Bool = false, disableNtf: Bool = false, replyMessageID: Int = 0) -> TelegramRequest {
+	public static func sendMessage(chatID: Int, text: String, replyMarkup: MarkupType?, parseMode: MessageParseMode = .markdown, disableWebPreview: Bool = false, disableNotification: Bool = false, replyMessageID: Int = 0) -> TelegramRequest {
 		
 		let request = TelegramRequest()
 		
@@ -31,7 +31,7 @@ extension TelegramRequest {
 			"chat_id":chatID,
 			"text": text,
 			"disable_web_page_preview": disableWebPreview,
-			"disable_notification": disableNtf
+			"disable_notification": disableNotification
 		]
 		
 		// Check whether any other query needs to be added
@@ -58,7 +58,7 @@ extension TelegramRequest {
 	## Builder Description
 	Sends a file based on the given "SendType", which defines both the ID of the file and 
 	*/
-	public func sendFile(chatID: Int, file: SendType, replyMarkup: MarkupType?, caption: String = "", disableNtf: Bool = false, replyMessageID: Int = 0) {
+	public func sendFile(chatID: Int, file: SendType, replyMarkup: MarkupType?, caption: String = "", disableNotification: Bool = false, replyMessageID: Int = 0) {
 		
 		query = [
 			"chat_id":chatID
@@ -71,7 +71,7 @@ extension TelegramRequest {
 		// Check whether any other query needs to be added
 		if replyMarkup != nil { query["reply_markup"] = replyMarkup!.getQuery() }
 		if replyMessageID != 0 { query["reply_to_message_id"] = replyMessageID }
-		if disableNtf != false { query["disable_notification"] = disableNtf }
+		if disableNotification != false { query["disable_notification"] = disableNotification }
 		
 		// Combine the query built above with the one the file provides
 		let finalQuery = query.reduce(file.getQuery(), { r, e in var r = r; r[e.0] = e.1; return r })
@@ -97,7 +97,7 @@ extension TelegramRequest {
 	- parameter caption: Provide an optional caption that will sit below the uploaded file in a Telegram chat.  Note that this only works with Audio,
 	Photo, Video, Document and Voice message file types - you wont see a caption appear with any other uploaded file type.
 	*/
-	public static func sendFile(file: MessageFile, callback: ReceiveUpload? = nil, chatID: Int, markup: MarkupType?, caption: String = "", disableNtf: Bool = false, replyMessageID: Int = 0) -> TelegramRequest {
+	public static func sendFile(file: MessageFile, callback: ReceiveUpload? = nil, chatID: Int, markup: MarkupType?, caption: String = "", disableNotification: Bool = false, replyMessageID: Int = 0) -> TelegramRequest {
 		
 		
 		// The PhotoSize/Photo model stopped working, this can't be used until later.
@@ -107,7 +107,7 @@ extension TelegramRequest {
 		let search = cache.find(upload: link, bot: self)
 		if search != nil {
 		print("SENDING...")
-		let message = sendFile(chatID: chatID, file: search!, replyMarkup: markup, caption: caption, disableNtf: disableNtf, replyMessageID: replyMessageID)
+		let message = sendFile(chatID: chatID, file: search!, replyMarkup: markup, caption: caption, disableNotification: disableNotification, replyMessageID: replyMessageID)
 		if callback != nil {
 		callback!.receiveMessage(message: message!)
 		}
@@ -137,8 +137,8 @@ extension TelegramRequest {
 				request.query["reply_to_message_id"] = replyMessageID
 			}
 			
-			if disableNtf != false {
-				request.query["disable_notification"] = disableNtf
+			if disableNotification != false {
+				request.query["disable_notification"] = disableNotification
 			}
 		}
 		
@@ -161,8 +161,8 @@ extension TelegramRequest {
 				request.form["reply_to_message_id"] = Field(name: "reply_to_message_id", filename: nil, part: Part(headers: [:], body: String(replyMessageID).bytes))
 			}
 			
-			if disableNtf != false {
-				request.form["disable_notification"] = Field(name: "disable_notification", filename: nil, part: Part(headers: [:], body: String(disableNtf).bytes))
+			if disableNotification != false {
+				request.form["disable_notification"] = Field(name: "disable_notification", filename: nil, part: Part(headers: [:], body: String(disableNotification).bytes))
 			}
 		}
 		
@@ -194,7 +194,7 @@ extension TelegramRequest {
 	}
 	
 	/* Use this method to send a game. On success, the sent Message is returned. */
-	public static func sendGame(chatID: Int, gameName: String, replyMarkup: MarkupType?, disableNtf: Bool = false, replyMessageID: Int = 0) -> TelegramRequest {
+	public static func sendGame(chatID: Int, gameName: String, replyMarkup: MarkupType?, disableNotification: Bool = false, replyMessageID: Int = 0) -> TelegramRequest {
 		
 		let request = TelegramRequest()
 		
@@ -206,7 +206,7 @@ extension TelegramRequest {
 		// Check whether any other query needs to be added
 		if replyMarkup != nil { request.query["reply_markup"] = replyMarkup!.getQuery() }
 		if replyMessageID != 0 { request.query["reply_to_message_id"] = replyMessageID }
-		if disableNtf != false { request.query["disable_notification"] = disableNtf }
+		if disableNotification != false { request.query["disable_notification"] = disableNotification }
 		
 		// Set the query
 		request.methodName = "sendGame"

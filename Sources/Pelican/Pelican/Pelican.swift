@@ -349,13 +349,13 @@ public final class Pelican: Vapor.Provider {
 	this becomes the length of time it takes after handling a set of updates to request more from Telegram,
 	until the timeout amount is reached.
 	*/
-  public func setPoll(interval: Int) {
+  public func setPollingInterval(_ interval: Int) {
 		updateQueue = UpdateQueue(interval: TimeInterval(interval)) {
 			
 			PLog.verbose("Update Starting...")
 			
       let updates = self.requestUpdates()
-			if updates != nil { self.filterUpdates(updates: updates!) }
+			if updates != nil { self.handleUpdates(updates!) }
 			self.updateQueue!.queueNext()
 			
 			PLog.verbose("Update Complete.")
@@ -616,7 +616,7 @@ public final class Pelican: Vapor.Provider {
 	Used by the in-built long polling solution to match updates to sessions.
 	### EDIT/REMOVE IN UPCOMING REFACTOR
 	*/
-	internal func filterUpdates(updates: [Update]) {
+	internal func handleUpdates(_ updates: [Update]) {
 		
     // Check the global timer for any scheduled events
     globalTimer += pollInterval

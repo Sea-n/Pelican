@@ -45,7 +45,7 @@ public class TGAdmin {
 	/**
 	Applies chat restrictions to a user.
 	*/
-	public func restrict(_ userID: Int, restrictUntil: Int?, restrictions: (msg: Bool, media: Bool, stickers: Bool, webPreview: Bool)?) {
+	public func restrict(_ userID: Int, restrictUntil: Int?, restrictions: (msg: Bool, media: Bool, stickers: Bool, useWebPreview: Bool)?) {
 		
 		let request = TelegramRequest.restrictChatMember(chatID: chatID, userID: userID, restrictUntil: restrictUntil, restrictions: restrictions)
 		_ = tag.sendRequest(request)
@@ -108,9 +108,9 @@ public class TGAdmin {
 	/**
 	Pins a message using the given message ID.
 	*/
-	public func pin(messageID: Int, disableNtf: Bool = false) {
+	public func pin(messageID: Int, disableNotification: Bool = false) {
 		
-		let request = TelegramRequest.pinChatMessage(chatID: chatID, messageID: messageID, disableNtf: disableNtf)
+		let request = TelegramRequest.pinChatMessage(chatID: chatID, messageID: messageID, disableNotification: disableNotification)
 		_ = tag.sendRequest(request)
 	}
 	

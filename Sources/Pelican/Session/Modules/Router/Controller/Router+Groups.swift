@@ -8,7 +8,7 @@
 import Foundation
 import Vapor
 
-extension RouteController {
+extension Router {
 	/**
 	Adds a group of routes to the session, enabling them to be used to receive user requests. Adding a group allows you to enable and
 	disable the routes it owns from being used by calling `setGroup(name:enabled:)`, as well as removing them using `removeGroup(name:)`.

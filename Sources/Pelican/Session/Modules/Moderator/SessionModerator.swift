@@ -22,8 +22,8 @@ public class SessionModerator {
 	private var changeTitleCallback: (SessionIDType, String, [Int], Bool) -> ()
 	private var checkTitleCallback: (Int, SessionIDType) -> ([String])
 	
-	public var getID: Int { return tag.getSessionID }
-	public var getTitles: [String] { return checkTitleCallback(tag.sessionID, tag.sessionIDType) }
+	public var getID: Int { return tag.id }
+	public var getTitles: [String] { return checkTitleCallback(tag.id, tag.idType) }
 	
 	
 	/**
@@ -38,7 +38,7 @@ public class SessionModerator {
 		self.changeTitleCallback = moderator.switchTitle
 		self.checkTitleCallback = moderator.getTitles
 		
-		if tag.sessionIDType != .chat || tag.sessionIDType != .user { return }
+		if tag.idType != .chat || tag.idType != .user { return }
 	}
 	
 	/**
@@ -46,7 +46,7 @@ public class SessionModerator {
 	*/
 	public func add(_ title: String) {
 		
-		changeTitleCallback(tag.sessionIDType, title, [tag.sessionID], false)
+		changeTitleCallback(tag.idType, title, [tag.id], false)
 	}
 	
 	/**
@@ -70,7 +70,7 @@ public class SessionModerator {
 	*/
 	public func remove(_ title: String) {
 		
-		changeTitleCallback(tag.sessionIDType, title, [tag.sessionID], true)
+		changeTitleCallback(tag.idType, title, [tag.id], true)
 	}
 	
 	/**
@@ -113,7 +113,7 @@ public class SessionModerator {
 	*/
 	public func checkTitle(_ title: String) -> Bool {
 		
-		let titles = checkTitleCallback(tag.sessionID, tag.sessionIDType)
+		let titles = checkTitleCallback(tag.id, tag.idType)
 		if titles.contains(title) { return true }
 		return false
 	}
@@ -145,10 +145,10 @@ public class SessionModerator {
 	*/
 	public func clearTitles() {
 		
-		let titles = checkTitleCallback(tag.sessionID, tag.sessionIDType)
+		let titles = checkTitleCallback(tag.id, tag.idType)
 		
 		for title in titles {
-			changeTitleCallback(tag.sessionIDType, title, [tag.sessionID], true)
+			changeTitleCallback(tag.idType, title, [tag.id], true)
 		}
 	}
 	
@@ -163,7 +163,7 @@ public class SessionModerator {
 	to be used by another operation at or near the timeframe where this occurs.
 	*/
 	public func blacklist() {
-		PLog.info("Adding to blacklist - \(tag.getBuilderID)")
+		PLog.info("Adding to blacklist - \(tag.builderID)")
 		tag.sendEvent(type: .blacklist, action: .blacklist)
 	}
 	

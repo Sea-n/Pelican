@@ -29,9 +29,9 @@ public class TGSend {
 	Sends a text-based message to the chat linked to this session.
 	*/
 	@discardableResult
-	public func message(_ message: String, markup: MarkupType?, parseMode: MessageParseMode = .markdown, replyID: Int = 0, webPreview: Bool = false, disableNtf: Bool = false) -> Message {
+	public func message(_ message: String, markup: MarkupType?, parseMode: MessageParseMode = .markdown, replyID: Int = 0, useWebPreview: Bool = false, disableNotification: Bool = false) -> Message {
 		
-		let request = TelegramRequest.sendMessage(chatID: chatID, text: message, replyMarkup: markup, parseMode: parseMode, disableWebPreview: webPreview, disableNtf: disableNtf, replyMessageID: replyID)
+		let request = TelegramRequest.sendMessage(chatID: chatID, text: message, replyMarkup: markup, parseMode: parseMode, disableWebPreview: useWebPreview, disableNotification: disableNotification, replyMessageID: replyID)
 		let response = tag.sendRequest(request)
 		
 		return try! Message(row: Row(response.data!))
@@ -41,9 +41,9 @@ public class TGSend {
 	Sends and uploads a file as a message to the chat linked to this session, using a `FileLink`
 	*/
 	@discardableResult
-	public func file(_ file: MessageFile, caption: String, markup: MarkupType?, replyID: Int = 0, disableNtf: Bool = false, callback: ReceiveUpload? = nil) -> Message {
+	public func file(_ file: MessageFile, caption: String, markup: MarkupType?, replyID: Int = 0, disableNotification: Bool = false, callback: ReceiveUpload? = nil) -> Message {
 		
-		let request = TelegramRequest.sendFile(file: file, callback: nil, chatID: chatID, markup: markup, caption: caption, disableNtf: disableNtf, replyMessageID: replyID)
+		let request = TelegramRequest.sendFile(file: file, callback: nil, chatID: chatID, markup: markup, caption: caption, disableNotification: disableNotification, replyMessageID: replyID)
 		let response = tag.sendRequest(request)
 		
 		return try! Message(row: Row(response.data!))

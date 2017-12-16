@@ -68,7 +68,7 @@ extension TelegramRequest {
 	Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate admin rights. Pass True for all boolean parameters to lift restrictions from a
 	user. Returns True on success.
 	*/
-	public static func restrictChatMember(chatID: Int, userID: Int, restrictUntil: Int?, restrictions: (msg: Bool, media: Bool, stickers: Bool, webPreview: Bool)?) -> TelegramRequest {
+	public static func restrictChatMember(chatID: Int, userID: Int, restrictUntil: Int?, restrictions: (msg: Bool, media: Bool, stickers: Bool, useWebPreview: Bool)?) -> TelegramRequest {
 		
 		let request = TelegramRequest()
 		
@@ -84,7 +84,7 @@ extension TelegramRequest {
 			request.query["can_send_messages"] = restrictions!.msg
 			request.query["can_send_media_messages"] = restrictions!.media
 			request.query["can_send_other_messages"] = restrictions!.stickers
-			request.query["can_add_web_page_previews"] = restrictions!.webPreview
+			request.query["can_add_web_page_previews"] = restrictions!.useWebPreview
 		}
 		
 		// Set the Request, Method and Content
@@ -231,14 +231,14 @@ extension TelegramRequest {
 	## API Description
 	Use this method to pin a message in a supergroup. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
 	*/
-	public static func pinChatMessage(chatID: Int, messageID: Int, disableNtf: Bool = false) -> TelegramRequest {
+	public static func pinChatMessage(chatID: Int, messageID: Int, disableNotification: Bool = false) -> TelegramRequest {
 		
 		let request = TelegramRequest()
 		
 		request.query = [
 			"chat_id": chatID,
 			"message_id": messageID,
-			"disable_notification": disableNtf
+			"disable_notification": disableNotification
 		]
 		
 		// Set the Request, Method and Content

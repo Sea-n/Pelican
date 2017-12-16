@@ -19,7 +19,7 @@ final public class CallbackQuery: Model, UpdateModel {
 	
 	public var id: String								// Unique identifier for the query.
 	public var from: User								// The sender of the query.
-	public var message: Message?				// message with the callback button that originated from the query.  Won't be available if it's too old.
+	public var message: Message?				// Message with the callback button that originated from the query.  Won't be available if it's too old.
 	public var inlineMessageID: String? // Identifier of the message sent via the bot in inline mode that originated the query.
 	public var chatInstance: String			// Global identifier, uniquely corresponding to the chat to which the message with the callback button was sent.  Useful for high scores in games.
 	public var data: String?						// Data associated with the callback button.  Be aware that a bad client can send arbitrary data here.

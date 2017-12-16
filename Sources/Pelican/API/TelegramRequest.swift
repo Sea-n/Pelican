@@ -35,13 +35,13 @@ public class TelegramRequest {
 
 	
 	// Forwards a message of any kind.  On success, the sent Message is returned.
-	public func forwardMessage(toChatID: Int, fromChatID: Int, fromMessageID: Int, disableNtf: Bool = false) {
+	public func forwardMessage(toChatID: Int, fromChatID: Int, fromMessageID: Int, disableNotification: Bool = false) {
 		
 		query = [
 			"chat_id":toChatID,
 			"from_chat_id": fromChatID,
 			"message_id": fromMessageID,
-			"disable_notification": disableNtf
+			"disable_notification": disableNotification
 		]
 		
 		// Set the query
