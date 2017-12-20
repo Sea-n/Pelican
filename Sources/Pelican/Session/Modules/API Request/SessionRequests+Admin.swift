@@ -7,6 +7,9 @@
 
 import Foundation
 
+/**
+This extension handles any kinds of operations involving group moderation and how the group details are presented and changed.
+*/
 extension SessionRequests {
 	/**
 	Kicks a user from the chat.

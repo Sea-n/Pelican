@@ -174,6 +174,8 @@ public final class Pelican: Vapor.Provider {
   var cache: CacheManager
 	/// The API key assigned to your bot.  PLEASE DO NOT ASSIGN IT HERE, ADD IT TO A JSON FILE INSIDE config/pelican.json as a "token".
   var apiKey: String
+	/// The Payment key assigned to your bot.  To assign the key, add it to the JSON file inside config/pelican.json as "payment_token".
+	var paymentKey: String
 	/// The combination of the API request URL and your API token.
   var apiURL: String
 	/// The droplet powering the server

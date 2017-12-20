@@ -14,9 +14,31 @@ import FluentProvider
 For any model that replicates the Telegram API, it must inherit fron this to be designed to build queries and be converted from responses
 in a way that Telegram understands.
 */
-protocol TelegramType: Model {
+protocol TelegramType {
 	
 }
+
+
+extension TelegramType {
+	
+	/**
+	A converter designed to bridge the gap between Vapor 2 and Swift 4, until Vapor 3 natively supports Codable for transforming types.
+	*/
+	func convertRowToJSON(_ row: Row) -> Data? {
+		
+		return try! row.converted(to: JSON.self).serialize().makeString().data(using: .utf8)
+	}
+	
+	/**
+	A converter designed to bridge the gap between Vapor 2 and Swift 4, until Vapor 3 natively supports Codable for transforming types.
+	*/
+	func convertJSONToRow(_ json: String) -> Row {
+		
+		return Row()
+	}
+	
+}
+
 
 // All types that conform to this protocol are able to convert itself into a aet of query information
 protocol TelegramQuery: NodeConvertible, JSONConvertible {

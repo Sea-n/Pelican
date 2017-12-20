@@ -8,9 +8,13 @@
 import Foundation
 
 /**
-A delegate designed to allow a Session to more directly request from the Telegram APIs without redeclarations or
+A delegate for Telegram API methods.
 */
-protocol SessionRequests {
-	var tag: SessionTag { get }
+public class SessionRequests {
+	var tag: SessionTag
+	
+	init(tag: SessionTag) {
+		self.tag = tag
+	}
 	
 }

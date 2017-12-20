@@ -33,10 +33,7 @@ open class ChatSession: Session {
 	
 	// API REQUESTS
 	// Shortcuts for API requests.
-	public var send: TGSend
-	public var admin: TGAdmin
-	public var edit: TGEdit
-	public var answer: TGAnswer
+	public var requests: SessionRequests
 	
 	
 	// DELEGATES AND CONTROLLERS
@@ -78,10 +75,7 @@ open class ChatSession: Session {
 		self.timeout = Timeout(tag: self.tag, schedule: bot.schedule)
 		self.flood = Flood()
 		
-		self.send = TGSend(chatID: self.chatID, tag: tag)
-		self.admin = TGAdmin(chatID: self.chatID, tag: tag)
-		self.edit = TGEdit(chatID: self.chatID, tag: tag)
-		self.answer = TGAnswer(tag: tag)
+		self.requests = SessionRequests(tag: tag)
 	}
 	
 	open func postInit() {

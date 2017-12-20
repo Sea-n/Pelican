@@ -27,7 +27,7 @@ extension SessionRequests {
 	Sends and uploads a file as a message to the chat linked to this session, using a `FileLink`
 	*/
 	@discardableResult
-	public func sendFile(_ file: MessageFile, caption: String, markup: MarkupType?, chatID: Int, replyID: Int = 0, disableNotification: Bool = false, callback: ReceiveUpload? = nil) -> Message {
+	public func sendFile(_ file: MessageFile, caption: String, markup: MarkupType?, chatID: Int, replyID: Int = 0, disableNotification: Bool = false) -> Message {
 		
 		let request = TelegramRequest.sendFile(file: file, callback: nil, chatID: chatID, markup: markup, caption: caption, disableNotification: disableNotification, replyMessageID: replyID)
 		let response = tag.sendRequest(request)

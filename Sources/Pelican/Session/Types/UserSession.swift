@@ -35,7 +35,7 @@ open class UserSession: Session {
 	
 	// API REQUESTS
 	// Shortcuts for API requests.
-	public var answer: TGAnswer
+	public var requests: SessionRequests
 	
 	
 	// DELEGATES / CONTROLLERS
@@ -75,7 +75,7 @@ open class UserSession: Session {
 		
 		self.schedule = bot.schedule
 		
-		self.answer = TGAnswer(tag: tag)
+		self.requests = SessionRequests(tag: tag)
 	}
 	
 	

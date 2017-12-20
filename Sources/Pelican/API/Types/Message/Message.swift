@@ -69,8 +69,7 @@ public enum MessageParseMode: String {
 	case none = ""
 }
 
-final public class Message: TelegramType, UpdateModel {
-	public var storage = Storage() // Unique message identifier for the database
+final public class Message: Codable, UpdateModel {
 	
 	public var tgID: Int // Unique identifier for the Telegram message.
 	public var from: User? // Sender, can be empty for messages sent to channels
@@ -107,6 +106,47 @@ final public class Message: TelegramType, UpdateModel {
 	public var migrateFromChatID: Int?             // The supergroup has been migrated from a group with the specified identifier.
 	public var pinnedMessage: Message?             // Specified message was pinned?
 	
+	// PAYMENT INFO
+	public var invoice: Invoice?
+	public var successfulPayment: SuccessfulPayment?
+	
+	
+	
+	enum CodingKeys: String, CodingKey {
+		case tgID = "message_id"
+		case from
+		case date
+		case chat
+		
+		case forwardFrom = "forward_from"
+		case forwardFromChat = "forward_from_chat"
+		case forwardedFromMessageID = "forward_from_message_id"
+		case forwardDate = "forward_date"
+		
+		case replyToMessage = "reply_to_message"
+		case editDate = "edit_date"
+		
+		case type
+		case text = "text"
+		case entities = "entities"
+		case caption = "caption_entities"
+		
+		case newChatMembers = "new_chat_members"
+		case leftChatMember = "left_chat_member"
+		case newChatTitle = "new_chat_title"
+		case newChatPhoto = "new_chat_photo"
+		case deleteChatPhoto = "delete_chat_photo"
+		case groupChatCreated = "group_chat_created"
+		case supergroupChatCreated = "supergroup_chat_created"
+		case channelChatCreated = "channel_chat_created"
+		case migrateToChatID = "migrate_to_chat_id"
+		case migrateFromChatID = "migrate_from_chat_id"
+		case pinnedMessage = "pinned_message"
+		
+		case invoice
+		case successfulPayment = "successful_payment"
+	}
+	
 	
 	public init(id: Int, date: Int, chat:Chat) {
 		self.tgID = id
@@ -114,6 +154,16 @@ final public class Message: TelegramType, UpdateModel {
 		self.chat = chat
 		self.type = .text
 	}
+	
+	public init(from decoder: Decoder) throws {
+		var container = decoder.container(keyedBy: CodingKeys.self)
+		
+	}
+	
+	public func encode(to encoder: Encoder) throws {
+		
+	}
+	
 	
 	
 	// NodeRepresentable conforming methods
@@ -209,39 +259,5 @@ final public class Message: TelegramType, UpdateModel {
 		if let subPinnedMessage = row["pinned_message"] {
 			self.pinnedMessage = try .init(row: Row(subPinnedMessage)) as Message
 		}
-	}
-	
-	public func makeRow() throws -> Row {
-		var row = Row()
-		try row.set("message_id", tgID)
-		try row.set("from", from)
-		try row.set("date", date)
-		try row.set("chat", chat)
-		
-		try row.set("forward_from", forwardFrom)
-		try row.set("forward_from_chat", forwardFromChat)
-		try row.set("forward_from_message_id", forwardedFromMessageID)
-		try row.set("forward_date", forwardDate)
-		
-		try row.set("reply_to_message", forwardFrom)
-		try row.set("edit_date", forwardFromChat)
-		
-		try row.set("text", text)
-		try row.set("entities", entities)
-		try row.set("caption", caption)
-		
-		try row.set("new_chat_member", newChatMembers)
-		try row.set("left_chat_member", leftChatMember)
-		try row.set("new_chat_title", newChatTitle)
-		try row.set("new_chat_photo", newChatPhoto)
-		try row.set("delete_chat_photo", deleteChatPhoto)
-		try row.set("group_chat_created", groupChatCreated)
-		try row.set("supergroup_chat_created", supergroupChatCreated)
-		try row.set("channel_chat_created", channelChatCreated)
-		try row.set("migrate_to_chat_id", migrateToChatID)
-		try row.set("migrate_from_chat_id", migrateFromChatID)
-		try row.set("pinned_message", pinnedMessage)
-		
-		return row
 	}
 }
