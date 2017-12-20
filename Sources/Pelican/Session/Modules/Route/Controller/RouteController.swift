@@ -15,7 +15,7 @@ to associated functionality.
 
 Check out the `Route` type for the list of pre-built route types available.
 */
-public class Router {
+public class RouteController {
 	
 	/**
 	The currently active set of routes for the ChatSession.
@@ -60,7 +60,7 @@ public class Router {
 	/**
 	Attempts to find and execute a route for the given user request, should only ever be accessed by ChatSession.
 	*/
-	func handleUpdate(_ update: Update) -> Bool {
+	func handle(update: Update) -> Bool {
 		
 		if update.content == "" && handleEmptyContent == false { return false }
 		if update.from == nil && handleEmptyUser == false { return false }
