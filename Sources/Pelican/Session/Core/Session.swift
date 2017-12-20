@@ -19,7 +19,7 @@ public protocol Session {
 	
 	// DELEGATES AND CONTROLLERS
 	/// Handles and matches user requests to available bot functions based on user-defined patterns and behaviours.
-	var router: Router { get }
+	var routes: RouteController { get }
 	
 	
 	// TIME AND ACTIVITY
@@ -27,6 +27,7 @@ public protocol Session {
 	var timeStarted: Date { get }
 	
 	
+	// 
 	/** A standard initialiser for a Session, which includes all the required information to setup any delegates it might have. */
 	init(bot: Pelican, tag: SessionTag, update: Update)
 	
@@ -54,7 +55,7 @@ extension Session {
 	public func update(_ update: Update) {
 		
 		// This needs revising, whatever...
-		_ = router.handleUpdate(update)
+		_ = routes.handle(update: update)
 		
 	}
 	

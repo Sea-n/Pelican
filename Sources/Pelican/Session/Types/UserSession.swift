@@ -18,6 +18,7 @@ UserSession is also used to handle InlineQuery and ChosenInlineResult routes, as
 */
 open class UserSession: Session {
 	
+	
 	//  CORE INTERNAL VARIABLES
 	public var tag: SessionTag
 	
@@ -32,15 +33,14 @@ open class UserSession: Session {
 	variables to an individual user session.
 	*/
 	
-	
 	// API REQUESTS
 	// Shortcuts for API requests.
-	public var requests: SessionRequests
-	
+	public var answer: TGAnswer
 	
 	// DELEGATES / CONTROLLERS
+	
 	/// Handles and matches user requests to available bot functions.
-	public var router: Router
+	public var routes: RouteController
 	
 	/// Stores what Moderator-controlled permissions the User Session has.
 	public var mod: SessionModerator
@@ -67,7 +67,7 @@ open class UserSession: Session {
 		
 		self.info = update.from!
 		self.userID = update.from!.tgID
-		self.router = Router()
+		self.routes = RouteController()
 		
 		self.mod = SessionModerator(tag: tag, moderator: bot.mod)!
 		self.timeout = Timeout(tag: tag, schedule: bot.schedule)
@@ -75,7 +75,7 @@ open class UserSession: Session {
 		
 		self.schedule = bot.schedule
 		
-		self.requests = SessionRequests(tag: tag)
+		self.answer = TGAnswer(tag: tag)
 	}
 	
 	
@@ -94,7 +94,7 @@ open class UserSession: Session {
 		timeout.bump(update)
 		
 		// This needs revising, whatever...
-		let handled = router.handleUpdate(update)
+		let handled = routes.handle(update: update)
 		
 		// Bump the flood controller after
 		flood.bump(update)

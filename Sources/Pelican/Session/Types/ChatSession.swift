@@ -33,15 +33,21 @@ open class ChatSession: Session {
 	
 	// API REQUESTS
 	// Shortcuts for API requests.
-	public var requests: SessionRequests
+	public var send: TGSend
+	public var admin: TGAdmin
+	public var edit: TGEdit
+	public var answer: TGAnswer
 	
 	
 	// DELEGATES AND CONTROLLERS
+	/// Container for automating markup options and responses.
+	public var prompts: PromptController
+	
 	/// Handler for delayed Telegram API calls and closure execution.
 	public var queue: ChatSessionQueue
 	
 	/// Handles and matches user requests to available bot functions.
-	public var router: Router
+	public var routes: RouteController
 	
 	/// Stores what Moderator-controlled titles the Chat Session has.
 	public var mod: SessionModerator
@@ -68,14 +74,18 @@ open class ChatSession: Session {
 		self.chat = update.chat!
 		self.chatID = update.chat!.tgID
 		
+		self.prompts = PromptController(tag: tag, schedule: bot.schedule)
 		self.queue = ChatSessionQueue(chatID: update.chat!.tgID, schedule: bot.schedule, tag: self.tag)
-		self.router = Router()
+		self.routes = RouteController()
 		
 		self.mod = SessionModerator(tag: tag, moderator: bot.mod)!
 		self.timeout = Timeout(tag: self.tag, schedule: bot.schedule)
 		self.flood = Flood()
 		
-		self.requests = SessionRequests(tag: tag)
+		self.send = TGSend(chatID: self.chatID, tag: tag)
+		self.admin = TGAdmin(chatID: self.chatID, tag: tag)
+		self.edit = TGEdit(chatID: self.chatID, tag: tag)
+		self.answer = TGAnswer(tag: tag)
 	}
 	
 	open func postInit() {
@@ -95,7 +105,11 @@ open class ChatSession: Session {
 		timeout.bump(update)
 		
 		// This needs revising, whatever...
-		_ = router.handleUpdate(update)
+		let handled = routes.handle(update: update)
+		
+		if handled == false {
+			_ = prompts.handle(update)
+		}
 		
 		// Bump the flood controller after
 		flood.bump(update)

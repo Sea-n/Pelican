@@ -65,12 +65,18 @@ extension Pelican {
 			}
 		}
 		
+		else if request.form.count != 0 {
+			vaporRequest.formData = request.form
+		}
+		
+		print(vaporRequest)
+		
 		
 		PLog.verbose("Telegram Request - (\(vaporRequest))")
 		var response: Response? = nil
 		
 		response = connectToClient(request: vaporRequest, attempts: 0)
-		//print(response)
+		print(response)
 		
 		PLog.verbose("Telegram Response - (\(String(describing: response!)))")
 		let tgResponse = TelegramResponse(response: response!)
@@ -93,12 +99,12 @@ extension Pelican {
 		// In a blacklist event, first make sure the Session ID type matches.  If not, return.
 		case .blacklist:
 			
-			switch event.tag.idType {
+			switch event.tag.getSessionIDType {
 				
 			case .chat:
-				mod.addToBlacklist(chatIDs: event.tag.id)
+				mod.addToBlacklist(chatIDs: event.tag.getSessionID)
 			case .user:
-				mod.addToBlacklist(userIDs: event.tag.id)
+				mod.addToBlacklist(userIDs: event.tag.getSessionID)
 			default:
 				return
 			}

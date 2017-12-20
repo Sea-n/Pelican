@@ -20,24 +20,20 @@ public struct SessionTag: Equatable {
 	
 	// DATA
 	/// The relative identifying ID for a session.  Could be a user ID, chat ID or other types of session identification.
-	var storedID: Int
+	var sessionID: Int
 	/// The type of Session the Tag and ID refer to.
-	var storedSessionType: Session.Type
+	var sessionType: Session.Type
 	/// The type of ID the session is represented by, used for more specific tasks such as Moderation.
-	var storedIDType: SessionIDType
-	/// The identifier of the Builder that created this session.
-	var storedBuilderID: Int
+	var sessionIDType: SessionIDType
+	/// The identifier for the Builder ID, assigned by Pelican at it's creation.
+	var builderID: Int
 	
 	
 	// GETTERS
-	/// The relative identifying ID for a session.  Could be a user ID, chat ID or a different, arbitrary type of session identification.
-	public var id: Int { return storedID }
-	/// The instance type that this session tag belongs to.
-	public var sessionType: Session.Type { return storedSessionType }
-	/// The type of ID the session is represented by, utilised by types like the Moderator.
-	public var idType: SessionIDType { return storedIDType }
-	/// The identifier of the Builder that created this session.
-	public var builderID: Int { return storedBuilderID }
+	public var getSessionID: Int { return sessionID }
+	public var getSessionType: Session.Type { return sessionType }
+	public var getSessionIDType: SessionIDType { return sessionIDType }
+	public var getBuilderID: Int { return builderID }
 	
 	
 	// CALLBACKS
@@ -47,10 +43,10 @@ public struct SessionTag: Equatable {
 	
 	init(bot: Pelican, builder: SessionBuilder, id: Int) {
 		
-		self.storedID = id
-		self.storedSessionType = builder.session
-		self.storedIDType = builder.idType
-		self.storedBuilderID = builder.getID
+		self.sessionID = id
+		self.sessionType = builder.session
+		self.sessionIDType = builder.idType
+		self.builderID = builder.getID
 		
 		
 		self.sendRequestCallback = bot.sendRequest(_:)
@@ -79,9 +75,7 @@ public struct SessionTag: Equatable {
 	
 	public static func ==(lhs: SessionTag, rhs: SessionTag) -> Bool {
 		
-		if lhs.id == rhs.id &&
-			lhs.sessionType == rhs.sessionType &&
-			lhs.idType == rhs.idType &&
+		if lhs.sessionID == rhs.sessionID &&
 			lhs.builderID == rhs.builderID { return true }
 		
 		return false
